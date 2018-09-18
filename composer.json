@@ -1,5 +1,5 @@
 {
-  "name": "yandex/webmaster.api",
+  "name": "alexreznikov/webmaster.api",
   "description": "Yandex Webmaster Api v3 library",
   "keywords": [
     "yandex",
@@ -7,7 +7,7 @@
     "api"
   ],
   "homepage": "https://github.com/yandex/webmaster.api",
-  "license": "Mozilla Public License Version 2.0",
+  "license": "MPL-2.0",
   "authors": [
     {
       "name": "Dmitriy Popov",
@@ -26,7 +26,7 @@
   },
   "autoload": {
     "psr-4": {
-      "yandex\\webmaster\\api\\": "src/"
+      "alexreznikov\\webmaster\\api\\": "src/"
     }
   }
 }
