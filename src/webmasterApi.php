@@ -42,6 +42,9 @@ namespace alexreznikov\webmaster\api;
 
 class webmasterApi
 {
+    const UPLOAD_ADDRESS_MODE_DEBUG = 'DEBUG';
+
+    const UPLOAD_ADDRESS_MODE_PRODUCTION = 'PRODUCTION';
 
     /**
      * Access token to Webmaster Api
@@ -58,7 +61,14 @@ class webmasterApi
      *
      * @var string
      */
-    private $apiUrl = 'https://api.webmaster.yandex.net/v3';
+    private $apiUrl = 'https://api.webmaster.yandex.net';
+
+    /**
+     * Version of webmaster API
+     *
+     * @var string
+     */
+    private $apiVersion = 'v3';
 
     /**
      * UserID in webmaster
@@ -93,10 +103,12 @@ class webmasterApi
      * Обратите внимание на статический метод getAccessToken(), которую можно использовать для его получения
      *
      * @param $accessToken string access token from Yandex ouath serverh
+     * @param $apiVersion string version of api
      */
-    protected function __construct($accessToken)
+    protected function __construct($accessToken, $apiVersion)
     {
         $this->accessToken = $accessToken;
+        $this->apiVersion = $apiVersion;
         $response = $this->getUserID();
         if (isset($response->error_message)) {
             $this->errorCritical($response->error_message);
@@ -111,12 +123,13 @@ class webmasterApi
      * Коорректный способ создания объектов класса: При ошибке возвращает объект со стандартными ошибками.
      *
      * @param $accessToken string
+     * @param $apiVersion string version of api
      *
      * @return webmasterApi
      */
-    public static function initApi($accessToken)
+    public static function initApi($accessToken, $apiVersion)
     {
-        $wmApi = new static($accessToken);
+        $wmApi = new static($accessToken, $apiVersion);
         if (!empty($wmApi->lastError)) {
             return (object)array('error_message' => $wmApi->lastError);
         }
@@ -136,7 +149,7 @@ class webmasterApi
      */
     public function getApiUrl($resource)
     {
-        $apiUrl = $this->apiUrl;
+        $apiUrl = $this->apiUrl . '/' . $this->apiVersion;
         if ($resource !== '/user/') {
             if (!$this->userID) {
                 return $this->errorCritical("Can't get hand {$resource} without userID");
@@ -861,5 +874,12 @@ class webmasterApi
         if (!is_object($response)) die('Unknown error in curl');
 
         return $response;
+    }
+
+    public function getUploadAddress($hostId, $mode = self::UPLOAD_ADDRESS_MODE_PRODUCTION)
+    {
+        return $this->get('/hosts/' . $hostId . '/turbo/uploadAddress/', [
+            'mode' => $mode,
+        ]);
     }
 }
