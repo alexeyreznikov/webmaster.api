@@ -46,6 +46,8 @@ class webmasterApi
 
     const UPLOAD_ADDRESS_MODE_PRODUCTION = 'PRODUCTION';
 
+    const DEFAULT_API_VERSION = 'v3';
+
     /**
      * Access token to Webmaster Api
      *
@@ -68,7 +70,7 @@ class webmasterApi
      *
      * @var string
      */
-    private $apiVersion = 'v3';
+    private $apiVersion = self::DEFAULT_API_VERSION;
 
     /**
      * UserID in webmaster
@@ -105,7 +107,7 @@ class webmasterApi
      * @param $accessToken string access token from Yandex ouath serverh
      * @param $apiVersion string version of api
      */
-    protected function __construct($accessToken, $apiVersion)
+    protected function __construct($accessToken, $apiVersion = self::DEFAULT_API_VERSION)
     {
         $this->accessToken = $accessToken;
         $this->apiVersion = $apiVersion;
@@ -127,7 +129,7 @@ class webmasterApi
      *
      * @return webmasterApi
      */
-    public static function initApi($accessToken, $apiVersion)
+    public static function initApi($accessToken, $apiVersion = self::DEFAULT_API_VERSION)
     {
         $wmApi = new static($accessToken, $apiVersion);
         if (!empty($wmApi->lastError)) {
