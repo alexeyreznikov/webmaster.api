@@ -46,7 +46,7 @@ class webmasterApi
 
     const UPLOAD_ADDRESS_MODE_PRODUCTION = 'PRODUCTION';
 
-    const DEFAULT_API_VERSION = 'v3';
+    const DEFAULT_API_VERSION = 'v4';
 
     /**
      * Access token to Webmaster Api
